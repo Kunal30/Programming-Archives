@@ -1,0 +1,225 @@
+public class BST {
+Node root;
+int ans=0;
+public BST()
+{
+	root=null;
+}
+public void depth(int key)
+{
+	int depth_counter=0;
+	Node x=tree_search(root,key);
+	while(x!=root)
+		{
+		 depth_counter++;
+		 x=x.parent;
+		}
+	System.out.println(depth_counter);
+}
+public void find_height(int key)
+{
+	Node x=tree_search(root,key);
+	int height_counter=height_recursive(x);
+	System.out.println(height_counter);
+}
+public int height_recursive(Node x)
+{
+   if(x==null)
+	   return -1;
+   else
+   {
+	   int leftsize=height_recursive(x.left);
+	   int rightsize=height_recursive(x.right);
+	   
+	 if(leftsize>rightsize)
+		   return leftsize+1;
+	 else
+		 return rightsize+1;
+   }
+   }
+public void subtree(int key)
+{
+	Node x=tree_search(root,key);
+	ans=find_nodes_of_subtree(x.key);
+	System.out.println(ans);
+}
+public int find_nodes_of_subtree(int key)
+{
+	Node x=tree_search(root,key);
+	int total=0;
+	 if(x.left!=null)
+		{
+		 total++;
+		 find_nodes_of_subtree(x.left.key);
+		}
+	 if(x.right!=null)
+		{
+		 total++;
+		 find_nodes_of_subtree(x.right.key);
+		}
+	   ans=ans+total;
+	   return ans;
+}
+public Node tree_search(Node x,int k)
+{
+	if(x==null || k==x.key)
+		return x;
+	if(k<x.key)
+		return tree_search(x.left,k);
+	else
+		return tree_search(x.right,k);
+}
+public Node tree_minimum(Node x)
+{
+	while(x.left!=null)
+		x=x.left;
+	return x;
+}
+public Node tree_maximum(Node x)
+{
+	while(x.right!=null)
+		x=x.right;
+	return x;
+}
+public Node getSuccessor(Node x){
+	if(x.right!=null)
+		return tree_minimum(x.right);
+	else
+		while(x==x.parent.right)
+			x=x.parent;
+	return x.parent;
+}
+public Node getPredecessor(Node x){
+	if(x.left!=null)
+		return tree_maximum(x.left);
+	else
+		while(x==x.parent.left)
+			x=x.parent;
+	return x.parent;
+}
+
+public void insert(int id){
+	Node newNode = new Node(id);
+	if(root==null){
+		root = newNode;
+		return;
+	}
+	Node current = root;
+	Node parent1 = null;
+	while(true){
+		parent1 = current;
+		if(id<current.key){				
+			current = current.left;
+			if(current==null){
+				parent1.left = newNode;
+				newNode.parent=parent1;
+				return;
+			}
+		}
+		else{
+			current = current.right;
+			if(current==null){
+				parent1.right = newNode;
+				newNode.parent=parent1;
+				return;
+			}
+			
+		}
+		
+	}
+}
+public void inorder_iterative(Node root)
+{
+	Node x=tree_minimum(root);
+	System.out.println(x.key);
+	while(x!=null)
+	{   
+		if(x.left!=null || x.right!=null)
+		x=getSuccessor(x);
+		System.out.println(x.key);
+	}
+}
+public void inorder_tree_walk(Node root){
+	if(root!=null){
+		inorder_tree_walk(root.left);
+		System.out.print(" " + root.key);
+		inorder_tree_walk(root.right);
+	}
+}
+public void preorder_tree_walk(Node root){
+	if(root!=null){
+		System.out.print(" " + root.key);
+		inorder_tree_walk(root.left);
+		inorder_tree_walk(root.right);
+	}
+}
+public void postorder_tree_walk(Node root){
+	if(root!=null){
+		inorder_tree_walk(root.left);
+		inorder_tree_walk(root.right);
+		System.out.print(" " + root.key);
+	}
+}
+public boolean delete(int id){
+	Node parent = root;
+	Node current = root;
+	boolean isLeftChild = false;
+	while(current.key!=id){
+		parent = current;
+		if(current.key>id){
+			isLeftChild = true;
+			current = current.left;
+		}else{
+			isLeftChild = false;
+			current = current.right;
+		}
+		if(current ==null){
+			return false;
+		}
+	}
+	if(current.left==null && current.right==null){
+		if(current==root){
+			root = null;
+		}
+		if(isLeftChild ==true){
+			parent.left = null;
+		}else{
+			parent.right = null;
+		}
+	}
+
+	else if(current.right==null){
+		if(current==root){
+			root = current.left;
+		}else if(isLeftChild){
+			parent.left = current.left;
+		}else{
+			parent.right = current.left;
+		}
+	}
+	else if(current.left==null){
+		if(current==root){
+			root = current.right;
+		}else if(isLeftChild){
+			parent.left = current.right;
+		}else{
+			parent.right = current.right;
+		}
+	}else if(current.left!=null && current.right!=null){
+		
+	
+		Node successor	 = getSuccessor(current);
+		if(current==root){
+			root = successor;
+		}else if(isLeftChild){
+			parent.left = successor;
+		}else{
+			parent.right = successor;
+		}			
+		successor.left = current.left;
+		if(successor.parent==current)
+		successor.parent.left=successor.right;		
+	}		
+	return true;		
+}
+}

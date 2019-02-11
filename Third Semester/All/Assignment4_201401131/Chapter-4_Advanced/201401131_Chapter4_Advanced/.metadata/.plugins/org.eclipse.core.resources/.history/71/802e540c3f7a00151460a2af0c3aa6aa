@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+public class BST {
+    Node root;   
+	public BST() {
+		// TODO Auto-generated constructor stub
+	root=null;
+	}
+	public void insert(int x){
+		Node Z=new Node();
+		Z.setdata(x);
+		insert1(Z);		
+	}
+	private void insert1(Node Z){
+		 Node X=root;
+		 Node Y=null;
+		 while(X!=null){
+			 Y=X;
+			 if(Z.getData()<X.getData()){
+				 X=X.getLeft();
+			 }
+			 else{
+				 X=X.getRight();
+			 }
+		 }
+		 Z.setparent(Y);
+		 if(Y==null){
+			 root=Z;
+		 }
+		 else{ 
+			 if(Z.getData()<Y.getData()){
+				 Y.setleft(Z);
+			 }
+			 else{
+				 Y.setright(Z);
+			 }
+		 }
+	//	 return root;
+	}
+    int noOFArrangements=0;
+    public int getNoOFTrees(){
+    	getNoOfTrees(root);
+    	int n=noOFArrangements;
+    	noOFArrangements=0;
+    	return n;
+    }
+    private int getNoOfTrees(Node x){
+    	if(x==null){
+    		return 1;
+    	}
+    	else{
+    		int l=getSizeOfSubTree(x.getLeft());
+    		//System.out.println(l);
+    		int n=getSizeOfSubTree(x);
+    	return noOFArrangements=combinations(n-1,l)*(getNoOfTrees(x.getLeft()))*getNoOfTrees(x.getRight());
+    	}
+    }
+    public int combinations(int n,int l){
+    	return factorial(n)/(factorial(n-l)*factorial(l));
+    }
+    public int factorial(int n){
+    	if(n<=1)
+    	{
+    		return 1;
+    	}
+    	else{
+    		return n*factorial(n-1);
+    	}
+    }
+    public int getSizeOfSubTree(Node x){
+        getDescendantsSize(x);
+        int s=size;
+        size=0;
+        return s;
+    }
+    int size=0;
+    private void getDescendantsSize(Node x){
+    	if(x==null){
+    		return ;
+    	}
+    	else{
+    		size++;
+    		getDescendantsSize(x.getLeft());
+    		getDescendantsSize(x.getRight());
+    	}
+    	
+    }
+   public Node search(int data){
+	   Node x=root;
+	   search(root,data);
+	  Node y=found;
+	  found=null;
+	   return y;
+   }
+   Node found=null;
+   private void search(Node node,int data){
+	   if(node==null){
+		   return ;
+	   }
+	//   System.out.println(node.getData());
+	   if(node.getData()==data){
+		   found=node;
+		   return;
+	   }
+	   else	if(data<node.getData()){
+			   node=node.getLeft();
+			   search(node, data);
+		   }
+		   else{
+			   node=node.getRight();
+			   search(node, data);
+		   }
+	   }
+  }

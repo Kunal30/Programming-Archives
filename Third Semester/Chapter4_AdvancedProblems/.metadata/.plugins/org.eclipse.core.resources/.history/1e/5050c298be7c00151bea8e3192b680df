@@ -1,0 +1,19 @@
+public class Main {
+	public static void main(String[] args)
+	{
+		BST bst = new BST();
+		bst.insert(50);		
+		bst.insert(40);		
+		bst.insert(60);		
+		//System.out.println(bst.size(bst.root.left));
+		bst.initializeSubtreeSize(bst.root);
+		bst.getLinks(bst.root);
+		//bst.getLinks();
+		/*System.out.println("Average depth="+bst.computeAverageDepthOfTree());
+       double avg=bst.computeAverageDepthOfTree();
+        bst.rightRotate(bst,bst.root.left);
+        System.out.println("New Average depth after rotation="+bst.computeAverageDepthOfTree());
+        double avgnew=bst.computeAverageDepthOfTree();
+        System.out.println("The Difference between the averages="+Math.abs(avgnew-avg));*/
+	}
+}

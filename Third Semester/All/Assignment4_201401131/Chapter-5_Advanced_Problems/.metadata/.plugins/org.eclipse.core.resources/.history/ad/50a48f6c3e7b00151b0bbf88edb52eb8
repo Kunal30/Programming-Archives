@@ -1,0 +1,16 @@
+import java.util.*;
+public class Main {
+	public static void main(String[] args)
+	{
+		BST bst = new BST();
+        bst.insert(5);
+        bst.insert(4);
+        bst.insert(3);
+        bst.insert(2);
+        bst.insert(6);
+        System.out.println("Average depth="+bst.computeAverageDepthOfTree());
+        bst.leftRotate(bst,bst.root);
+        System.out.println(bst.root.left.left.depth);
+        System.out.println("Average depth="+bst.computeAverageDepthOfTree());
+	}
+}

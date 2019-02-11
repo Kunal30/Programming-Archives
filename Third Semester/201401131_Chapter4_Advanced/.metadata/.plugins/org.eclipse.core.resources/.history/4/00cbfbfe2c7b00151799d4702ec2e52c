@@ -1,0 +1,206 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+public class BST {
+    Node root;
+   
+	public BST() {
+	
+	root=null;
+	}
+
+public void insert(int key)
+{
+	Node newNode=new Node(key);
+	Node x = root;
+	if(root == null)
+	{
+		root = newNode;
+		return;
+	}
+	while((x.key > newNode.key && x.left != null) || (x.key < newNode.key && x.right != null))
+	{
+		if(x.key > newNode.key)
+		{
+			x = x.left;
+		}
+		else
+		{
+			x = x.right;
+		}	
+	}
+	newNode.parent = x;
+	if(x.key > newNode.key)
+	{
+		 x.left = newNode;
+	}
+	else
+	{
+		x.right = newNode;
+	}
+}
+	public void preorder(){
+		preorder(root);
+	}
+	private void preorder(Node X){
+	 if(X!=null){
+		System.out.println(X.getData());
+		preorder(X.getLeft());
+		preorder(X.getRight());
+	 }
+	}
+	public void Inorder(Node X){
+		 if(X!=null){
+			Inorder(X.getLeft());
+			System.out.println(X.getData());
+			Inorder(X.getRight());
+		 }
+		}
+	public void Postorder(Node X){
+		 if(X!=null){
+			 Inorder(X.getLeft());
+			Inorder(X.getRight());
+	        System.out.println(X.getData());
+		 }
+		}
+	public void levelOrderTraversal(){
+		levelOrderTraversal(root);
+	}
+	private void levelOrderTraversal(Node st){
+		Queue<Node> q=new LinkedList<Node>();
+        q.add(st);
+        int l=0;
+        int count=0;
+        while(!q.isEmpty()){	
+        	Node q1=q.poll();
+        	System.out.print(q1.getData()+" ");
+        	if(q1.getLeft()!=null){
+        		q.add(q1.getLeft());
+        	}
+        	if(q1.getRight()!=null){
+        		q.add(q1.getRight());
+        	}
+        	
+        }
+	}
+	public void ZigZagLevelOrderTraversal(){
+		Stack<Node> s1=new Stack<Node>();
+		ArrayList<Node> zigzag=new ArrayList<Node>();
+	
+		s1.add(root);
+		boolean flag=false;
+		while(!s1.isEmpty()){
+			Stack<Node>tempStack=new Stack<Node>();
+			while(!s1.isEmpty()){
+				Node pop=s1.pop();
+				System.out.println(pop.getData());
+			    zigzag.add(pop);
+			    if(!flag){
+			    	if(pop.getLeft()!=null){
+			    	tempStack.add(pop.getLeft());
+			    	}
+			    	if(pop.getRight()!=null){
+			    	tempStack.add(pop.getRight());
+			    	}
+			    	}
+			    else{
+			    	if(pop.getRight()!=null){
+			    	tempStack.add(pop.getRight());
+			    	}
+			    	if(pop.getLeft()!=null){
+			    	tempStack.add(pop.getLeft());
+			    	}
+			    }
+			}
+			flag=!flag;
+			s1=tempStack;
+		}	
+	}
+    public void iterativeInordertraversal(){
+    	  iterativeInordertraversal(getMinimumSubtree(root));
+    }
+    public void iterativeInordertraversal(Node x){
+    	while(x!=null){
+    		System.out.print(x.getData()+" ");
+    		x=this.getSuccessor(x);
+    	}
+    }
+    public Node getSuccessor(Node node){
+    	if(node.getRight()!=null){
+    		return getMinimumSubtree(node.getRight());
+    	}
+    	Node y=node.getParent();
+            while(y!=null && node==y.getRight()){
+            	node=y;
+            	y=y.getParent();
+            }
+          return y;  
+    	}
+    public Node getPredecessor(Node node){
+    	if(node.getLeft()!=null){
+    		return maxSubTree(node.getLeft());
+    	}
+    	Node y=node.getParent();
+            while(y!=null && node==y.getLeft()){
+            	node=y;
+            	y=y.getParent();
+            }
+          return y;  
+    	}
+    public Node getMinimumSubtree(Node node){
+    	while(node.getLeft()!=null){
+    		node=node.getLeft();
+    	}
+    	return node;
+    }
+    public Node search(Node x,int key)
+    {
+    	if(x == null)
+    		return x;
+    	if(x.key == key)
+    		return x;
+    	else if(x.key > key)	
+    	{
+    		return search(x.left,key);
+    	}
+    	else
+    		return search(x.right,key);
+    }
+     public int maxTree(){
+	   return maxSubTree(root).getData();
+   }
+   public int minTree(){
+	   return getMinimumSubtree(root).getData();
+   }
+   public Node maxSubTree(Node x){
+	   while(x.right!=null){
+		   x=x.getRight();
+	   }
+	   return x;
+   }
+
+   static int size=0;
+   public int sizeofTree(Node x){
+      if(x==null){
+    	  return 0;
+      }
+      else{
+    	 return size=1+sizeofTree(x.getLeft())+sizeofTree(x.getRight());
+      }
+   }
+   
+   public void setSizeInNodes(Node x){
+	   if(x==null){
+		   return;
+	   }
+	   else{
+	   sizeofTree(x);
+       x.size=size;
+       size=0;
+	   setSizeInNodes(x.left);
+       setSizeInNodes(x.right);
+	   }
+   }
+}

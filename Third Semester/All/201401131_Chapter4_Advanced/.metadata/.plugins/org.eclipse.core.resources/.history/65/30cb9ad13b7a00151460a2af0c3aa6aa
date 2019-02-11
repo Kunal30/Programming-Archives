@@ -1,0 +1,688 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+public class BST {
+    Node root;   
+	public BST() {
+		// TODO Auto-generated constructor stub
+	root=null;
+	}
+	public void insert(int x){
+		Node Z=new Node();
+		Z.setdata(x);
+		insert1(Z);		
+	}
+	private void insert1(Node Z){
+		 Node X=root;
+		 Node Y=null;
+		 while(X!=null){
+			 Y=X;
+			 if(Z.getData()<X.getData()){
+				 X=X.getLeft();
+			 }
+			 else{
+				 X=X.getRight();
+			 }
+		 }
+		 Z.setparent(Y);
+		 if(Y==null){
+			 root=Z;
+		 }
+		 else{ 
+			 if(Z.getData()<Y.getData()){
+				 Y.setleft(Z);
+			 }
+			 else{
+				 Y.setright(Z);
+			 }
+		 }
+	//	 return root;
+	}
+	public void preorder(){
+		preorder(root);
+	}
+	private void preorder(Node X){
+	 if(X!=null){
+		System.out.println(X.getData());
+		preorder(X.getLeft());
+		preorder(X.getRight());
+	 }
+	}
+	public void Inorder(Node X){
+		 if(X!=null){
+			Inorder(X.getLeft());
+			System.out.println(X.getData());
+			Inorder(X.getRight());
+		 }
+		}
+	public void Postorder(Node X){
+		 if(X!=null){
+			 Inorder(X.getLeft());
+			Inorder(X.getRight());
+	        System.out.println(X.getData());
+		 }
+		}
+	public void levelOrderTraversal(){
+		levelOrderTraversal(root);
+	}
+	private void levelOrderTraversal(Node st){
+		Queue<Node> q=new LinkedList<Node>();
+        q.add(st);
+        int l=0;
+        int count=0;
+        while(!q.isEmpty()){	
+        	Node q1=q.poll();
+        /*	count++;
+        	if((int)(Math.log(count)/Math.log(2))>l){
+        		l++;
+       		System.out.println(); 		
+        	}
+        	*/
+        	System.out.print(q1.getData()+" ");
+        	if(q1.getLeft()!=null){
+        		q.add(q1.getLeft());
+        	}
+        	if(q1.getRight()!=null){
+        		q.add(q1.getRight());
+        	}
+        	
+        }
+	}
+	public void ZigZagLevelOrderTraversal(){
+		Stack<Node> s1=new Stack<Node>();
+		ArrayList<Node> zigzag=new ArrayList<Node>();
+	
+		s1.add(root);
+		boolean flag=false;
+		while(!s1.isEmpty()){
+		//	System.out.println(s1.size());
+	  //     System.out.println(s1.size());
+			Stack<Node>tempStack=new Stack<Node>();
+			while(!s1.isEmpty()){
+				Node pop=s1.pop();
+				System.out.println(pop.getData());
+			    zigzag.add(pop);
+			    if(!flag){
+			    	if(pop.getLeft()!=null){
+			    	tempStack.add(pop.getLeft());
+			  //  	System.out.println(pop.getLeft().getData()+" added");
+			    	}
+			    	if(pop.getRight()!=null){
+			    	tempStack.add(pop.getRight());
+			  //  	System.out.println(pop.getRight().getData()+" added");
+			    	}
+			    	}
+			    else{
+			    	if(pop.getRight()!=null){
+			    	tempStack.add(pop.getRight());
+			   // 	System.out.println(pop.getRight().getData()+" added");
+			    	}
+			    	if(pop.getLeft()!=null){
+			    	tempStack.add(pop.getLeft());
+			   // 	System.out.println(pop.getLeft().getData()+" added");
+			    	}
+			    }
+			}
+		//	System.out.println("here");
+			flag=!flag;
+			s1=tempStack;
+		}	
+	//  for(int i=0;i<zigzag.size();i++)System.out.println(zigzag.get(i).getData());
+	}
+    public void iterativeInordertraversal(){
+    	  iterativeInordertraversal(getMinimumSubtree(root));
+    }
+    public void iterativeInordertraversal(Node x){
+    	while(x!=null){
+    		System.out.print(x.getData()+" ");
+    		x=this.getSuccessor(x);
+    	}
+    }
+    public void iterativePreorderTraversal(){
+    	Stack<Node> s1=new Stack<Node>();
+    	Node x=root;
+    	while(x!=null){
+    		System.out.print(x.getData()+" ");
+    		s1.add(x.getRight());
+    		x=x.getLeft();
+    	}
+    	while(!s1.isEmpty()){
+    		x=s1.pop();
+    		while(x!=null){
+    			System.out.print(x.getData()+" ");
+    			s1.add(x.getRight());
+    			x=x.getLeft();
+    		}
+    	}
+    }
+    public int predecessor(int x){
+    	Node b=search(x);
+    	if(b!=null){
+    	Node p=getPredecessor(b);
+    	if(p!=null)return p.getData();
+    	else{
+    		throw new IllegalStateException("no predecessor");
+    	}
+    	}
+    	else{
+    		throw new IllegalStateException("number not found ");
+    	}
+    }
+    public int succcessor(int x){
+    	Node b=search(x);
+    	if(b!=null){
+    	Node p=getSuccessor(b);
+    	if(p!=null)return p.getData();
+    	else{
+    		throw new IllegalStateException("no succsessor");
+    	}
+    	}
+    	else{
+    		throw new IllegalStateException("number bot found ");
+    	}
+    }
+    public void iterativePostOrderTraversal(){
+    	  Stack<Node> s1=new Stack<Node>();
+    	  Stack<Node> s2=new Stack<Node>();
+    	  Node x=root;
+    	  while(x!=null){
+    		s1.add(x);
+    		s2.add(x.getLeft());
+    		x=x.getRight();
+    	  }
+    	  while(!s2.isEmpty()){
+    		  x=s2.pop(); 
+    		  while(x!=null){
+    			  s1.add(x);
+    			  s2.add(x.getLeft());
+    		      x=x.getRight();
+    		  }
+    	  }
+    	 while(!s1.isEmpty()){
+    		 System.out.print(s1.pop().getData()+" ");
+    	 } 
+    }
+    public Node getSuccessor(Node node){
+    	if(node.getRight()!=null){
+    		return getMinimumSubtree(node.getRight());
+    	}
+    	Node y=node.getParent();
+            while(y!=null && node==y.getRight()){
+            	node=y;
+            	y=y.getParent();
+            }
+          return y;  
+    	}
+    public Node getPredecessor(Node node){
+    	if(node.getLeft()!=null){
+    		return maxSubTree(node.getLeft());
+    	}
+    	Node y=node.getParent();
+            while(y!=null && node==y.getLeft()){
+            	node=y;
+            	y=y.getParent();
+            }
+          return y;  
+    	}
+    public Node getMinimumSubtree(Node node){
+    	while(node.getLeft()!=null){
+    		node=node.getLeft();
+    	}
+    	return node;
+    }
+    int noOFArrangements=0;
+    public int getNoOFTrees(){
+    	getNoOfTrees(root);
+    	int n=noOFArrangements;
+    	noOFArrangements=0;
+    	return n;
+    }
+    private int getNoOfTrees(Node x){
+    	if(x==null){
+    		return 1;
+    	}
+    	else{
+    		int l=getSizeOfSubTree(x.getLeft());
+    		//System.out.println(l);
+    		int n=getSizeOfSubTree(x);
+    	return noOFArrangements=combinations(n-1,l)*(getNoOfTrees(x.getLeft()))*getNoOfTrees(x.getRight());
+    	}
+    }
+    public int combinations(int n,int l){
+    	return factorial(n)/(factorial(n-l)*factorial(l));
+    }
+    public int factorial(int n){
+    	if(n<=1)
+    	{
+    		return 1;
+    	}
+    	else{
+    		return n*factorial(n-1);
+    	}
+    }
+    public int getSizeOfSubTree(Node x){
+        getDescendantsSize(x);
+        int s=size;
+        size=0;
+        return s;
+    }
+    int size=0;
+    private void getDescendantsSize(Node x){
+    	if(x==null){
+    		return ;
+    	}
+    	else{
+    		size++;
+    		getDescendantsSize(x.getLeft());
+    		getDescendantsSize(x.getRight());
+    	}
+    	
+    }
+   public Node search(int data){
+	   Node x=root;
+	   search(root,data);
+	  Node y=found;
+	  found=null;
+	   return y;
+   }
+   Node found=null;
+   private void search(Node node,int data){
+	   if(node==null){
+		   return ;
+	   }
+	//   System.out.println(node.getData());
+	   if(node.getData()==data){
+		   found=node;
+		   return;
+	   }
+	   else	if(data<node.getData()){
+			   node=node.getLeft();
+			   search(node, data);
+		   }
+		   else{
+			   node=node.getRight();
+			   search(node, data);
+		   }
+	   }
+   public int getDepth(int data){
+	    modifiedSearch(root,data);
+	    int he=height;
+	    height=0;
+	    Node f=found;
+	    found=null;
+	  if(f!=null)return he;
+	  else throw new IllegalStateException("not in binary tree");
+   }
+   int height=0;
+   private void modifiedSearch(Node node,int data){
+	   if(node==null){
+		   return ;
+	   }
+	//   System.out.println(node.getData());
+	   if(node.getData()==data){
+		   found=node;
+		   return;
+	   }
+	   else	if(data<node.getData()){
+			   node=node.getLeft();
+			   height++;
+			   modifiedSearch(node, data);
+		   }
+		   else{
+			   node=node.getRight();
+			   height++;
+			   modifiedSearch(node, data);
+		   }
+	   }
+   int depth;
+   private void setDepth(int x){
+	   depth=x;
+   }
+   public int getHeight(int x){
+	   Node a=search(x);
+	   if(a!=null){
+		   Depth(a,0);
+		   int d=depth;
+		   depth=0;
+		   return d;
+	   }
+	   else{
+		   throw new IllegalStateException("number not found");
+	   }
+   }
+   public void Depth(Node x,int depth){
+	   if(x==null){
+		   return;
+	   }
+	   this.setDepth(depth);
+	   Depth(x.getLeft(), depth+1);
+	   Depth(x.getRight(), depth+1);
+}
+   public void iterativePreOrderyTraversal(){
+	    Node x=root;
+	    boolean vertical =false;
+	    boolean horizotal=true;
+	    while(x!=null){
+	    if(!vertical){
+	    	System.out.println(x.getData());
+	    	if(x.getLeft()!=null){
+	    	horizotal=true;
+	    	x=x.getLeft();
+	    	}
+	    	else if(x.getRight()!=null){
+	    		horizotal=false;
+	    		x=x.getRight();
+	    	}
+	    	else{
+	    		vertical=!vertical;
+	    	}
+	    }
+	    else if(vertical && x.getParent()!=null && x==(x.getParent()).getLeft()){
+	    	vertical=false;
+	    	x=x.getParent();
+	    	if(x.getRight()!=null){
+	    	x=x.getRight();
+	    	}
+	    }
+	    else if(vertical && x.getParent()!=null && x==(x.getParent()).getRight() ){
+	        vertical=true;
+	        x=x.getParent();
+	    }
+   }
+   }
+   public int maxTree(){
+	   return maxSubTree(root).getData();
+   }
+   public int minTree(){
+	   return getMinimumSubtree(root).getData();
+   }
+   public Node maxSubTree(Node x){
+	   while(x.right!=null){
+		   x=x.getRight();
+	   }
+	   return x;
+   }
+   public void iterativePreOrderTraversal(){
+		Node x=root;
+		String horizontal="left";
+		String vertical="down";
+		while(x!=null){
+			if(vertical.equalsIgnoreCase("down")){
+				System.out.print(x.getData()+" ");
+				if(x.getLeft()!=null){
+					horizontal="left";
+					vertical="down";
+					x=x.getLeft();
+				}
+				else if(x.getRight()!=null){
+					horizontal="right";
+					vertical="down";
+					x=x.getRight();
+				}
+				else{
+					vertical="up";
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="left"){
+				if(x.getParent()!=null){
+				x=x.getParent();
+				if(x.getRight()!=null){
+					x=x.getRight();
+					vertical="down";
+					horizontal="right";
+				}
+				else{
+			//		System.out.println(x.getData());
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+				}
+				else{
+					if(x.getRight()!=null){
+					    x=x.getRight();
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="right"){
+		//		System.out.println(x.getData());
+				if(x.getParent()!=null){
+					x=x.getParent();
+					Node y=x.getParent();
+			        if(y!=null){
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+			        }
+			        else{
+			        	x=null;
+			        }      
+				}
+				else{
+					x=null;
+				}
+			}
+		}
+	}
+	public void iterativePostORderTraversal(){
+		Node x=root;
+		String horizontal="left";
+		String vertical="down";
+		while(x!=null){
+			if(vertical.equalsIgnoreCase("down")){
+				if(x.getLeft()!=null){
+					horizontal="left";
+					vertical="down";
+					x=x.getLeft();
+				}
+				else if(x.getRight()!=null){
+					horizontal="right";
+					vertical="down";
+					x=x.getRight();
+				}
+				else{
+					vertical="up";
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="left"){
+				System.out.print(x.getData()+" ");
+				if(x.getParent()!=null){
+					x=x.getParent();
+				if(x.getRight()!=null){
+					x=x.getRight();
+					vertical="down";
+					horizontal="right";
+				}
+				else{
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+				}
+				else{
+					System.out.print(x.getData()+" ");
+					if(x.getRight()!=null){
+					    x=x.getRight();
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="right"){
+			    System.out.print(x.getData()+" ");
+				if(x.getParent()!=null){
+					x=x.getParent();
+					Node y=x.getParent();
+			        if(y!=null){
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+			        }
+			        else{
+			        	System.out.print(x.getData()+" ");
+			        	x=null;
+			        }      
+				}
+				else{
+					x=null;
+				}
+			}
+		}
+	}
+	public void iterativeINORderTraversal(){
+		Node x=root;
+		String horizontal="left";
+		String vertical="down";
+		while(x!=null){
+			if(vertical.equalsIgnoreCase("down")){
+				if(x.getLeft()!=null){
+					horizontal="left";
+					vertical="down";
+					x=x.getLeft();
+				}
+				else if(x.getRight()!=null){
+					horizontal="right";
+					vertical="down";
+					x=x.getRight();
+				}
+				else{
+					vertical="up";
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="left"){
+				if(x.visit==0){
+				System.out.print(x.getData()+" ");
+				x.visit++;
+				}
+				if(x.getParent()!=null){
+					x=x.getParent();
+                   if(x.visit==0){
+					System.out.print(x.getData()+" ");
+				    x.visit++; 
+                   }
+					if(x.getRight()!=null){
+					x=x.getRight();
+					vertical="down";
+					horizontal="right";
+				}
+				else{
+					Node y=x.getParent();
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+				}
+				}
+				else{
+					if(x.getRight()!=null){
+					    x=x.getRight();
+					}
+				}
+			}
+			if(vertical.equalsIgnoreCase("up") && horizontal=="right"){
+			    if(x.visit==0){
+				System.out.print(x.getData()+" ");
+				x.visit++;
+			    }
+			    if(x.getParent()!=null){
+					x=x.getParent();
+					Node y=x.getParent();
+			        if(y!=null){
+					if(x==y.getLeft()){
+						horizontal="left";		
+					}
+					else{
+						horizontal="right";
+					}
+			        }
+			        else{
+			        	x=null;
+			        }      
+				}
+				else{
+					x=null;
+				}
+			}
+		}
+	}
+   public void delete(int t){
+	Node  x=search(t);
+	delete(x);
+	System.out.println(x.getData()+"da");
+   }
+   
+   private void delete(Node x){
+	   if(x.getLeft()==null){
+		   System.out.println("enter 1");
+		   transplant(x,x.getRight());   
+	   }
+	   else if(x.getRight()==null){
+		   System.out.println("enter 2");
+		   transplant(x,x.getLeft());
+	   }
+	   else{
+		   Node y=getMinimumSubtree(x.getRight());
+		   if(y.getParent()!=x){
+			   System.out.println("entre her");
+			   transplant(y,y.right);
+			   y.right=x.right;
+			   y.getRight().setparent(y);
+		   }
+		   transplant(x,y);
+		   y.left=x.left;
+		   y.left.parent=y;
+	   }
+   }
+   public void transplant(Node x,Node y){
+	   if(x.getParent()==null){
+		   root=y;
+		   System.out.println("root set");
+	   }
+	   else if(x==x.getParent().getLeft()){
+		   x.getParent().setleft(y);
+	   }
+	   else{
+		   x.getParent().setright(y);
+	   }
+	   if(y!=null){
+		   y.setparent(x.getParent());
+	   }
+   }
+}

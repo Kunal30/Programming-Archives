@@ -1,0 +1,22 @@
+public class Graph {
+ Vertex elements[];
+	public void createGraph(int [][]adjacency_matrix,int number_of_nodes)
+	{
+		elements=new Vertex[number_of_nodes+1];
+		for(int i=1;i<=number_of_nodes;i++)
+		{
+			int z=0;
+			for(int j=1;j<=number_of_nodes;j++)
+			{
+				if(adjacency_matrix[i][j]==1)
+				{   
+					elements[i]=new Vertex();
+					elements[j]=new Vertex();
+					elements[i].Link[z]=elements[j];
+					z++;
+				}
+			}
+		}
+	}
+	
+}

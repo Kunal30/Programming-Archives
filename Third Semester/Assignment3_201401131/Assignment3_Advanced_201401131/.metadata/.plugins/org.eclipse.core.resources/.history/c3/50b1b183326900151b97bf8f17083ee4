@@ -1,0 +1,38 @@
+public class Main {
+	static int heapsize,N;
+public static void main(String args[])
+{  
+	System.out.println("Hello");
+	int A[]={12,235,1231,234,131,477,321,215};
+	build_heapifymin(A);
+	for(int i=0;i<heapsize;i++)
+		System.out.println(A[i]);
+}
+public static void build_heapifymin(int arr[])
+{
+    N = heapsize-1;
+    for (int i = N/2; i >= 0; i--)
+        minheap(arr, i);        
+}
+public static void minheap(int arr[], int i)
+{ 
+    int left = 2*i ;
+    int right = 2*i + 1;
+    int min = i;
+    if (left <= N && arr[left] < arr[i])
+        min = left;
+    if (right <= N && arr[right] < arr[min])        
+        min = right;
+
+    if (min != i)
+    {
+        swap(arr, i, min);
+        minheap(arr, min);
+    }
+}
+public static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+}

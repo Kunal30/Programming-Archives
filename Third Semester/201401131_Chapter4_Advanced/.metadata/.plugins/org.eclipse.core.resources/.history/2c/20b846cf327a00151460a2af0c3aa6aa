@@ -1,0 +1,96 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+public class BST {
+    Node root;
+	public BST() {
+	root=null;
+	}
+	public void insert(int x){
+		Node Z=new Node();
+		Z.setdata(x);
+		insert1(Z);	
+	}
+	private void insert1(Node Z){
+		 Node X=root;
+		 Node Y=null;
+		 while(X!=null){
+			 Y=X;
+			 if(Z.getData()<X.getData()){
+				 X=X.getLeft();
+			 }
+			 else{
+				 X=X.getRight();
+			 }
+		 }
+		 Z.setparent(Y);
+		 if(Y==null){
+			 root=Z;
+		 }
+		 else{ 
+			 if(Z.getData()<Y.getData()){
+				 Y.setleft(Z);
+			 }
+			 else{
+				 Y.setright(Z);
+			 }
+		 }
+	}
+	public void levelOrderTraversal(){
+		levelOrderTraversal(root);
+	}
+	private void levelOrderTraversal(Node st){
+		Queue<Node> q=new LinkedList<Node>();
+        q.add(st);
+        int l=0;
+        int count=0;
+        while(!q.isEmpty()){	
+        	Node q1=q.poll();
+        	System.out.print(q1.getData()+" ");
+        	if(q1.getLeft()!=null){
+        		q.add(q1.getLeft());
+        	}
+        	if(q1.getRight()!=null){
+        		q.add(q1.getRight());
+        	}   	
+        }
+	}
+   static int size=0;
+   public int sizeofTree(Node x){
+      if(x==null){
+    	  return 0;
+      }
+      else{
+    	 return size=1+sizeofTree(x.getLeft())+sizeofTree(x.getRight());
+      }
+   }
+   int noOfInversions=0;
+   public int noOfInversions(){
+	   noOfInversions(root);
+	   int n=noOfInversions;
+       noOfInversions=0;
+	   return n;
+   }
+   private int noOfInversions(Node x){
+	  if(x==null){
+		  return 0;
+	  }
+	  else{
+		 return noOfInversions=sizeofTree(x.left)+1+noOfInversions(x.left)+noOfInversions(x.right);
+	  }
+   }
+   public void setSizeInNodes(Node x){
+	   if(x==null){
+		   return;
+	   }
+	   else{
+	   sizeofTree(x);
+       x.size=size;
+       size=0;
+	   setSizeInNodes(x.left);
+       setSizeInNodes(x.right);
+	   }
+   } 
+}

@@ -1,0 +1,88 @@
+public class Main {
+	static int heapsize,heap_height,N,index=0,rankmin=1,rankmax;
+public static void main(String args[])
+{
+	int A[]={1,2,3,4,5,6,7,10,9,8,11,12,13,14,15,16,17,18,19,20};
+	rankmax=A.length;
+	heapsize=A.length;
+	int n1=A.length;
+	while(n1!=1)
+	{
+		heap_height++;
+		n1=n1/2;
+	}
+	Build_MinMaxHeap(A);
+	System.out.println("Min Max Heap---------->");
+	for(int i=0;i<A.length;i++)
+		System.out.print(+A[i]+" ");
+}
+public static void Build_MinMaxHeap(int []A)
+{
+	int B[]=new int[A.length];
+	  for(int k=0;k<A.length;k++)
+		 B[k]=A[k];
+	  
+       int j=0;
+       double prev=0;
+	   for(int i=0;i<=heap_height;i++)
+       {
+		  if(i%2!=0)
+    	 {
+			for(;j<Math.pow(2,i)+prev&&j<A.length;j++) 
+				makeMaxHeap(A,B);			  
+    	 }
+		  else
+		  {
+			  for(;j<Math.pow(2,i)+prev&&j<A.length;j++)
+		    	  makeMinHeap(A,B);
+		  }
+		prev=prev+Math.pow(2,i);  
+       }
+}
+public static void makeMaxHeap(int []A,int []B)
+{
+	A[index]=Randomized_Select(B,0,B.length-1,rankmax);
+	rankmax--;
+	index++;
+}
+public static void makeMinHeap(int []A,int []B)
+{
+	A[index]=Randomized_Select(B,0,B.length-1,rankmin);
+	rankmin++;
+	index++;
+}
+public static int Randomized_Select(int []n,int p,int r,int rank)
+{
+	if(p==r)
+		return n[p];
+	int q=partition(n,p,r);
+	int k=q-p+1;
+	if(rank==k)
+		return n[q];
+	else if(rank<k)
+		 return Randomized_Select(n,p,q-1,rank);
+	else
+		return Randomized_Select(n,q+1,r,rank-k);	
+}
+public  static int partition(int []n,int lower,int higher)
+{
+	int x=n[higher];
+	int i=lower-1;
+	for(int j=lower;j<=higher-1;j++)
+	{
+		if(n[j]<=x)
+		{
+			i++;
+			swap(n,i,j);
+		}
+	}
+	swap(n,i+1,higher);
+	return i+1;
+}
+public static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+}

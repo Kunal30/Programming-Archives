@@ -1,0 +1,24 @@
+
+public class Binary_Search_Tree {
+static Node root;
+public Binary_Search_Tree()
+{
+	root=null;
+}
+public void add(Comparable obj)
+{  
+	Node nextNode=new Node();
+	nextNode.left=null;
+	nextNode.right=null;
+	nextNode.data=obj;
+	if(root==null)
+		root=nextNode;
+	else
+		root.addNode(nextNode);
+}
+public void print()
+{
+	if(root!=null)
+		root.printNodes();
+}
+}

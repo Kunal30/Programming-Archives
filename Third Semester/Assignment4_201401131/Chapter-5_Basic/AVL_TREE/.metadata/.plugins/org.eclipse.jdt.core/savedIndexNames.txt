@@ -1,0 +1,2 @@
+INDEX VERSION 1.127+D:\AVLTREE2\.metadata\.plugins\org.eclipse.jdt.core
+4289035476.index

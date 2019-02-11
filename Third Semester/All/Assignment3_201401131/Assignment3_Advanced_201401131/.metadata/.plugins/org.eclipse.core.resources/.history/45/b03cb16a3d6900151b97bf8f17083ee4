@@ -1,0 +1,83 @@
+public class Main {
+	static int heapsize,N,heap_height=1;
+public static void main(String args[])
+{  
+	int A[]={12,235,1231,234,131,477,321,215};
+	heapsize=A.length;
+	build_heapifymin(A);
+	int n1=A.length;
+	while(n1!=1)
+	{
+		heap_height++;
+		n1=n1/2;
+	}
+	get_swapable_pair_of_nodes(A);
+	
+}
+public static void get_swapable_pair_of_nodes(int []A)
+{
+	for(int i=0;i<heap_height;)
+	{   
+		double prev=0;
+		for(double j=Math.pow(2,i)-1;j<Math.pow(2,i)+prev;j++)
+		{   
+		//	System.out.println(j);
+			for(double k=j+1;k<Math.pow(2,i)+prev;k++)
+			{  
+				swap(A,(int)j,(int)k);
+				if(MinHeapChecker(A)==true)
+					System.out.println(A[(int)k]+" and "+A[(int)j]+" can be swapped");
+				swap(A,(int)j,(int)k);
+			}
+			i++;
+		}
+		prev=prev+Math.pow(2,i);
+	}
+}
+public static void build_heapifymin(int arr[])
+{
+    N = heapsize-1;
+    for (int i = N/2; i >= 0; i--)
+        minheap(arr, i);        
+}
+public static void minheap(int arr[], int i)
+{ 
+    int left = 2*i ;
+    int right = 2*i + 1;
+    int min = i;
+    if (left <= N && arr[left] < arr[i])
+        min = left;
+    if (right <= N && arr[right] < arr[min])        
+        min = right;
+
+    if (min != i)
+    {
+        swap(arr, i, min);
+        minheap(arr, min);
+    }
+}
+public static void swap(int[] a, int i, int j) {
+	if(i<a.length && j<a.length)
+	{
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+	}
+	}
+public static boolean MinHeapChecker(int []a)
+{ 
+	int count=0;
+	for(int i=0;i<a.length;i++)
+	{
+	   if(2*i+1<a.length && a[i]<a[2*i+1])
+    	   count++;
+       if(2*i+2<a.length && a[i]<a[2*i+2])
+    	   count++;
+       
+	}
+	if(count==a.length-1)
+		return true;
+	else
+		return false;
+}
+}

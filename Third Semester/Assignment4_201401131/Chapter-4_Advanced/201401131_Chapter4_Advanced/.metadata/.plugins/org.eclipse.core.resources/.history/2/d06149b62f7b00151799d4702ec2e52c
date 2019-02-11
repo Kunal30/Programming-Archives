@@ -1,0 +1,112 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.zip.ZipEntry;
+public class BST {
+    Node root;   
+	public BST() {
+	root=null;
+	}
+	public void insert(int key)
+	{
+		Node newNode=new Node(key);
+		Node x = root;
+		if(root == null)
+		{
+			root = newNode;
+			return;
+		}
+		while((x.key > newNode.key && x.left != null) || (x.key < newNode.key && x.right != null))
+		{
+			if(x.key > newNode.key)
+			{
+				x = x.left;
+			}
+			else
+			{
+				x = x.right;
+			}	
+		}
+		newNode.parent = x;
+		if(x.key > newNode.key)
+		{
+			 x.left = newNode;
+		}
+		else
+		{
+			x.right = newNode;
+		}
+	}
+    int noOFArrangements=0;
+    public int getNoOFTrees(){
+    	getNoOfTrees(root);
+    	int n=noOFArrangements;
+    	noOFArrangements=0;
+    	return n;
+    }
+    private int getNoOfTrees(Node x){
+    	if(x==null){
+    		return 1;
+    	}
+    	else{
+    		int l=getSizeOfSubTree(x.getLeft());
+    		int n=getSizeOfSubTree(x);
+    	return noOFArrangements=combinations(n,l)*(getNoOfTrees(x.getLeft()))*getNoOfTrees(x.getRight());
+    	}
+    }
+    public int combinations(int n,int l){
+    	return factorial(n)/(factorial(n-l)*factorial(l));
+    }
+    public int factorial(int n){
+    	if(n<=1)
+    	{
+    		return 1;
+    	}
+    	else{
+    		return n*factorial(n-1);
+    	}
+    }
+    public int getSizeOfSubTree(Node x){
+        getDescendantsSize(x);
+        int s=size;
+        size=0;
+        return s;
+    }
+    int size=0;
+    private void getDescendantsSize(Node x){
+    	if(x==null){
+    		return ;
+    	}
+    	else{
+    		size++;
+    		getDescendantsSize(x.getLeft());
+    		getDescendantsSize(x.getRight());
+    	}
+    }
+   public Node search(int data){
+	   Node x=root;
+	   search(root,data);
+	  Node y=found;
+	  found=null;
+	   return y;
+   }
+   Node found=null;
+   private void search(Node node,int data){
+	   if(node==null){
+		   return ;
+	   }
+	   if(node.getData()==data){
+		   found=node;
+		   return;
+	   }
+	   else	if(data<node.getData()){
+			   node=node.getLeft();
+			   search(node, data);
+		   }
+		   else{
+			   node=node.getRight();
+			   search(node, data);
+		   }
+	   }
+  }

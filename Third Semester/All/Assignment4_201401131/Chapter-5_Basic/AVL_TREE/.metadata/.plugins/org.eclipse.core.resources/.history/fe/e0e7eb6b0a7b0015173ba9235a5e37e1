@@ -1,0 +1,170 @@
+import java.util.*;
+public class Main {
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		BST bst = new BST();
+		while(true)
+		{
+			String[] input = sc.nextLine().split(" ");
+			
+			if(input[0].equals("end"))
+			{
+				break;
+			}
+			
+			if(input[0].equals("insert"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = new Node(key);
+				bst.insert(newNode);
+			}
+			
+			if(input[0].equals("delete"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node deleteNode = bst.delete(key);
+				if(deleteNode == null)
+					System.out.println("null");
+				else
+					System.out.println(deleteNode.key);
+			}
+			
+			if(input[0].equals("successor"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = bst.treeSuccessor(key);
+				if(newNode == null)
+					System.out.println("null");
+				else
+				System.out.println(newNode.key);
+			}
+			
+			if(input[0].equals("predecessor"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = bst.treePredecessor(key);
+				if(newNode == null)
+					System.out.println("null");
+				else
+				System.out.println(newNode.key);
+			}
+			
+			if(input[0].equals("max"))
+			{
+				Node newNode = bst.treeMax(bst.root);
+				if(newNode == null)
+					System.out.println("null");
+				else
+				System.out.println(newNode.key);
+			}
+			
+			if(input[0].equals("min"))
+			{
+				Node newNode = bst.treeMin(bst.root);
+				if(newNode == null)
+					System.out.println("null");
+				else
+				System.out.println(newNode.key);
+			}
+			
+			if(input[0].equals("inorder"))
+			{
+				bst.printInOrder(bst.root);
+				System.out.println();
+			}
+			
+			if(input[0].equals("preorder"))
+			{
+				bst.printPreOrder(bst.root);
+				System.out.println();
+			}
+			
+			if(input[0].equals("postorder"))
+			{
+				bst.printPostOrder(bst.root);
+				System.out.println();
+			}
+			
+			if(input[0].equals("leveltraversal"))
+			{
+				bst.levelTraversal();
+				System.out.println();
+			}
+			
+			if(input[0].equals("zigzagtraversal"))
+			{
+				bst.zigzagTraversal();
+				System.out.println();
+			}
+			
+			if(input[0].equals("preorderiterative"))
+			{
+				bst.preOrderIterative();
+				System.out.println();
+			}
+			
+			if(input[0].equals("postorderiterative"))
+			{
+				bst.postOrderIterative();
+				System.out.println();
+			}
+			
+			if(input[0].equals("size"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = new Node(key);
+				int size = bst.size(newNode);
+				System.out.println(size);
+			}
+			
+			if(input[0].equals("depth"))
+			{
+				int key = Integer.parseInt(input[1]);
+				int size = bst.depth(bst.root,key);
+				System.out.println(size);
+			}
+			
+			if(input[0].equals("height"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = bst.search(bst.root,key);
+				int size = bst.height(newNode);
+				System.out.println(size);
+			}
+			
+			if(input[0].equals("leftrotate"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node x = bst.search(bst.root,key);
+				bst.leftRotate(bst,x);
+			}
+			
+			if(input[0].equals("rightrotate"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node x = bst.search(bst.root,key);
+				bst.rightRotate(bst,x);
+			}
+			
+			if(input[0].equals("insertavl"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = new Node(key);
+				bst.insert(newNode);
+				bst.AVL(newNode.parent);
+			}
+			
+			if(input[0].equals("deleteavl"))
+			{
+				int key = Integer.parseInt(input[1]);
+				Node newNode = bst.search(bst.root,key);
+				Node parent = newNode.parent;
+				bst.delete(newNode.key);
+				bst.AVL(parent);
+			}
+			bst.printInOrder(bst.root);
+			System.out.println();
+		}
+	}
+}

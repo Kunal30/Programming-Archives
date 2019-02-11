@@ -1,0 +1,40 @@
+
+
+public class Node {
+  Node parent;
+  Node left;
+  Node right;
+  int data;
+  int size=0;
+  public Node() {
+	// TODO Auto-generated constructor stub
+   this.parent=null;
+   this.left=null;
+   this.right=null;
+  }
+  public void setdata(int T){
+	  this.data=T;
+  }
+  public int getData(){
+	  return data;
+  }
+  public void setparent(Node parent){
+	  this.parent=parent;
+  }
+  public void setleft(Node left){
+	  this.left=left;
+  }
+  public void setright(Node right){
+	  this.right=right;
+  }
+  public Node getParent(){
+	  return parent;
+  }
+  public Node getLeft(){
+	  return left;
+  }
+  public Node getRight(){
+	  return right;
+  } 
+  int visit=0;
+}

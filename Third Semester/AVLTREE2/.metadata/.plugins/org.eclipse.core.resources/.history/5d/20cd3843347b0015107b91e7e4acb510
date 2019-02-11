@@ -1,0 +1,9 @@
+import java.util.*;
+public class Main {
+	public static void main(String[] args)
+	{
+		BST bst = new BST();
+        bst.insertavl(5);
+        bst.insertavl(4);
+	}
+}

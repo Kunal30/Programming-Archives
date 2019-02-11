@@ -1,0 +1,68 @@
+import java.io.*;
+import java.util.Scanner;
+public class Main {
+	static int N;
+public static void main(String args[])throws IOException
+{
+	int A[]={43,3125,134,123,112,11,1};
+	Scanner s1=new Scanner(System.in);
+	System.out.println("Which build heap procedure do you want to follow?");
+	System.out.println("1)Root-Down");
+	System.out.println("2)Leaf-Up");
+	int choice=Integer.parseInt(s1.next());
+	if(choice==1)
+	buildHeapRootDown(A);
+	else
+		if(choice==2)
+			build_heap_leaf_up(A);
+	for(int i=0;i<N;i++)
+		System.out.println(A[i]);
+}
+public static void build_heap_leaf_up(int arr[])
+{
+    N = arr.length-1;
+    for (int i = N/2; i >= 0; i--)
+        maxheap(arr, i);        
+}        
+public static void buildHeapRootDown(int heap[]){
+	for(int i=2;i<=N;i++){
+		heapifyRD(heap,i);
+	}
+}
+public static void heapifyRD(int []heap,int i){
+	if(i==0){
+		System.out.println(heap[i]);
+		return;
+	}
+	int a=heap[i];
+	int b=heap[i/2];
+	if(a>b){
+		heap[i/2]=a;
+		heap[i]=b;
+		heapifyRD(heap,i/2);
+	}
+	
+}
+
+public static void maxheap(int arr[], int i)
+{ 
+    int left = 2*i ;
+    int right = 2*i + 1;
+    int max = i;
+    if (left <= N && arr[left] > arr[i])
+        max = left;
+    if (right <= N && arr[right] > arr[max])        
+        max = right;
+    if (max != i)
+    {
+        swap(arr, i, max);
+        maxheap(arr, max);
+    }
+}
+public static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+}

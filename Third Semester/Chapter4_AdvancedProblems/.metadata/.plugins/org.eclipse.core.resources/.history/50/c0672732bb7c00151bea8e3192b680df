@@ -1,0 +1,540 @@
+import java.util.ArrayDeque;
+import java.util.Queue;
+public class BST {	
+	Node root;
+	int totalDepth=0,total=0,counter=0;
+	BST()
+	{
+		root = null; 
+	}
+	public void getLinks(Node x)
+	{
+	
+		if(counter<2)
+		{
+		if(x==null)
+			return;
+		if(x.left!=null&&(x.left.size==total/3||x.left.size==total/3+1||x.left.size==total/3-1))
+		{
+			System.out.println("Link Break between="+x.left.key+" and "+x.key);
+			x.left=null;
+			counter++;
+			initializeSubtreeSize(root);
+			getLinks(root);
+		}
+		if(x.right!=null&&(x.left.size==total/3||x.left.size==total/3+1||x.left.size==total/3-1))
+		{
+			System.out.println("Link Break between="+x.right.key+" and "+x.key);
+			x.right=null;
+			counter++;
+			initializeSubtreeSize(root);
+			getLinks(root);
+		}
+		}
+		getLinks(x.left);
+		getLinks(x.right);
+		
+	}
+	public void initializeSubtreeSize(Node x)
+	{
+		if(x==null)
+			return;
+		x.size=size(x);
+		initializeSubtreeSize(x.left);
+		initializeSubtreeSize(x.right);
+	}
+	public void AddAllDepths(Node x)
+	{
+		if(x == null)
+			return;
+		totalDepth=totalDepth+x.depth;
+		AddAllDepths(x.left);
+		AddAllDepths(x.right);
+	}
+	public double computeAverageDepthOfTree()
+	{
+		totalDepth=0;
+		AddAllDepths(root);
+		return ((totalDepth)*1.0)/total;
+	}
+	public void insertavl(int id)
+	{
+		Node newNode=new Node(id);
+	    insert(newNode);
+	    AVL(newNode.parent);
+	    levelTraversal();
+	    System.out.println();
+		
+	}
+	public void deleteavl(int id)
+	{
+		Node newNode = search(root,id);
+		Node parent = newNode.parent;
+		delete(newNode.key);
+		AVL(parent);
+	    levelTraversal();
+	    System.out.println();
+	
+	}
+	public void insert(Node newNode)
+	{   
+		
+		total++;
+		Node x = root;
+		if(root == null)
+		{
+			root = newNode;
+			return;
+		}
+		while((x.key > newNode.key && x.left != null) || (x.key < newNode.key && x.right != null))
+		{
+			if(x.key > newNode.key)
+			{
+				x = x.left;
+			}
+			else
+			{
+				x = x.right;
+			}	
+		}
+		newNode.parent = x;
+		if(x.key > newNode.key)
+		{
+			 x.left = newNode;
+		}
+		else
+		{
+			x.right = newNode;
+		}
+		if(x!=null)
+			newNode.depth=depth(root,newNode.key);
+	}
+	
+	public void insert(int data)
+	{   
+		Node newNode=new Node(data);
+		total++;
+		Node x = root;
+		if(root == null)
+		{
+			root = newNode;
+			return;
+		}
+		while((x.key > newNode.key && x.left != null) || (x.key < newNode.key && x.right != null))
+		{
+			if(x.key > newNode.key)
+			{
+				x = x.left;
+			}
+			else
+			{
+				x = x.right;
+			}	
+		}
+		newNode.parent = x;
+		if(x.key > newNode.key)
+		{
+			 x.left = newNode;
+		}
+		else
+		{
+			x.right = newNode;
+		}
+		if(x!=null)
+			newNode.depth=depth(root,newNode.key);
+	}
+	
+	public Node delete(int value)
+	{
+		total--;
+		Node x = search(root,value);
+		if(x == null)
+			return null;
+		if(x.left == null && x.right == null)
+		{
+			if(x == root)
+			{
+				root = null;
+			}
+			else
+			{
+				if(x == x.parent.left)
+					x.parent.left = null;
+				else	
+					x.parent.right = null;
+			}
+			
+		}
+		else if(x.left == null)
+		{
+			if(x == root)
+			{
+				x.right.parent = null;
+				root = x.right;
+			}
+			x.right.parent = null;
+			x = x.right;
+		}
+		else if(root.right == null)
+		{
+			if(x == root)
+			{
+				x.left.parent = null;
+				root = x.left;
+			}
+			root.left.parent = null;
+			root = root.left;
+		}
+		else
+		{
+			Node y = treeSuccessor(x.key);
+			Node z = delete(y.key);
+			
+			z.parent = x.parent;
+			z.right = x.right;
+			z.left = x.left;
+			if(x.left != null)
+				x.left.parent = z;
+			if(x.right != null)
+				x.right.parent = z;
+			if(x == root)
+			{
+				z.parent = null;
+				root = z;
+			}
+			else if(x == x.parent.right)
+			{
+				x.parent.right = x;
+			}
+			else if(x == x.parent.left)
+			{
+				x.parent.left = z;
+			}
+		}
+		return x;
+	} 
+	
+	
+	public Node search(Node x,int key)
+	{
+		if(x == null)
+			return x;
+		if(x.key == key)
+			return x;
+		else if(x.key > key)
+		{
+			return search(x.left,key);
+		}
+		else
+			return search(x.right,key);
+	}
+
+	public Node treeSuccessor(int x)
+	{
+		Node y = search(root,x);
+		if(y.right != null)
+		{
+			return treeMin(y.right);
+		}
+		while(y != root && y == y.parent.right)
+		{
+			y = y.parent;
+		}
+		return y.parent;
+	}
+	
+	public Node treePredecessor(int x)
+	{
+		Node y = search(root,x);
+		
+		if(y.left != null)
+		{
+			return treeMax(y.left);
+		}
+		while(y != root && y == y.parent.left)
+		{
+			y = y.parent;
+		}
+		return y.parent;
+	}
+	
+	public Node treeMin(Node x)
+	{
+		if(x.left == null)
+			return x;
+		else
+			return treeMin(x.left);
+	}
+	
+	public Node treeMax(Node x)
+	{
+		if(x.right == null)
+			return x;
+		else
+			return treeMax(x.right);
+	}
+	public void printInOrder(Node x)
+	{
+		if(x == null)
+			return;
+		printInOrder(x.left);
+		System.out.print(x.key + " ");
+		printInOrder(x.right);
+	}
+	
+	public void printPreOrder(Node x)
+	{
+		if(x == null)
+			return;
+		System.out.print(x.key + " ");
+		printPreOrder(x.left);
+		printPreOrder(x.right);
+	}
+	
+	public void printPostOrder(Node x)
+	{
+		if(x == null)
+			return;
+		printPostOrder(x.left);
+		printPostOrder(x.right);
+		System.out.print(x.key + " ");
+	}
+	
+	public void inOrderIterative()
+	{
+		Node x = treeMin(root);
+		while(x != null)
+		{
+			System.out.print(x.key + " ");
+			x = treeSuccessor(x.key);
+		}
+	}
+	
+	public void levelTraversal()
+	{
+		Queue<Node> q = new ArrayDeque<Node>();
+		q.add(root);
+		while(q.peek() != null)
+		{
+			Node x = q.remove();
+			System.out.print(x.key + " ");
+			if(x.left != null)
+				q.add(x.left);
+			if(x.right != null)
+				q.add(x.right);
+		}
+	}
+	
+	public void zigzagTraversal()
+	{
+		ArrayDeque<Node> s1 = new ArrayDeque<Node>();
+		ArrayDeque<Node> s2 = new ArrayDeque<Node>();
+		s1.push(root);
+		while(s1.peek() != null || s2.peek() != null)
+		{
+			while(s1.isEmpty() == false)
+			{
+				Node x = s1.pop();	
+				System.out.print(x.key + " ");
+				if(x.left != null)
+					s2.push(x.left);
+				if(x.right != null)
+					s2.push(x.right);
+			}
+			
+			while(s2.isEmpty() != true)
+			{
+				Node x = s2.pop();	
+				System.out.print(x.key + " ");
+				if(x.right != null)
+					s1.push(x.right);
+				if(x.left != null)
+					s1.push(x.left);
+			}
+		}
+	}
+	
+	public int height(Node x)
+	{
+		if(x == null)
+			return -1;
+		else
+		{
+			int leftSize = height(x.left);
+			int rightSize = height(x.right);
+			if(leftSize > rightSize)
+				return leftSize + 1;
+			else
+				return rightSize + 1;
+		}
+	}
+	
+	public int depth(Node x,int key)
+	{
+		int depth = 0;
+		while(x.key != key)
+		{
+			if(x.key > key)
+			{
+				x = x.left;
+			}
+			else
+			{
+				x = x.right;
+			}
+			depth++;
+		}
+		return depth;
+	}
+	
+	public int size(Node key)
+	{
+		Node y = search(root,key.key);
+		
+		return sizeRecursive(y);
+	}
+	
+	public int sizeRecursive(Node x)
+	{
+		if(x == null)
+			return 0;
+		else
+		{
+			int noOfNodes = 0;
+			int leftSize = sizeRecursive(x.left);
+			int rightSize = sizeRecursive(x.right);
+			noOfNodes = noOfNodes + leftSize + rightSize;
+			
+			return noOfNodes + 1;
+		}
+	}
+	
+	public void leftRotate(BST bst, Node x)
+	{
+		
+		Node y = x.right;
+		Node z = x.parent;
+		
+		x.right = y.left;
+		if(y.left != null)
+		{
+			y.left.parent = x;
+		}
+		x.parent = y;
+		y.left = x;
+		if(z != null)
+		{
+			y.parent = z;
+			if(z.left == x)
+			{
+				z.left = y;
+			}
+			else
+				z.right = y;
+		}
+		else
+		{
+			bst.root = y;
+			y.parent = null;
+		}
+		y.depth=y.depth-1;
+    	increaseDepthBy1(y.left,x.right);
+		decreaseDepthBy1(y.right,x.right);
+	}
+	public void increaseDepthBy1(Node x,Node y)
+	{
+		if(x == null)
+			return;
+		if(x!=y)
+		x.depth=x.depth+1;
+		increaseDepthBy1(x.left,y);
+		increaseDepthBy1(x.right,y);
+	}
+	public void decreaseDepthBy1(Node x,Node y)
+	{
+		if(x == null)
+			return;
+		if(x!=y)
+		x.depth=x.depth-1;
+		decreaseDepthBy1(x.left,y);
+		decreaseDepthBy1(x.right,y);
+	}
+	public void rightRotate(BST bst, Node x)
+	{
+		Node y = x.left;
+		Node z = x.parent;
+		
+		x.left = y.right;
+		if(y.right != null)
+		{
+			y.right.parent = x;
+		}
+		x.parent = y;
+		y.right = x;
+		if(z != null)
+		{
+			y.parent = z;
+			if(z.right == x)
+			{
+				z.right = y;
+			}
+			else
+				z.left = y;
+		}
+		else
+		{
+			bst.root = y;
+			y.parent = null;
+		}
+		y.depth=y.depth-1;
+		increaseDepthBy1(y.right,x.left);
+		decreaseDepthBy1(y.left,x.left);
+		}
+	public void AVL(Node x)
+	{
+		if(x == null)
+			return;
+		
+		int heightDiff = height(x.left) - height(x.right);
+		if(heightDiff == 0)
+		{
+			return;
+		}
+		else if(heightDiff > 1 || heightDiff < -1)
+		{
+			if(heightDiff > 1)
+			{	
+				Node y = x.left;
+				int heightdiffy = height(y.left) - height(y.right);
+				if(heightdiffy >= -1)
+				{
+					rightRotate(this,x);
+				}
+				else
+				{
+					leftRotate(this,y);
+					rightRotate(this,x);
+				}
+			}
+			else
+			{
+				Node y = x.right;
+				int heightdiffy = height(y.left) - height(y.right);							
+				if(heightdiffy <= -1)
+				{
+					leftRotate(this,x);
+				}
+				else
+				{
+					rightRotate(this,y);
+					leftRotate(this,x);
+				}
+			}
+			return;
+		}
+		else
+		{
+			AVL(x.parent);
+		}
+	}
+}

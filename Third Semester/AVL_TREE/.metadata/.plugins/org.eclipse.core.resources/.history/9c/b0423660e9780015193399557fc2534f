@@ -1,0 +1,53 @@
+
+public class Main {
+  
+	public static void main(String args[])
+	{
+	   AVL bst=new AVL();
+	   bst.AVL_Insert(60);
+	   bst.AVL_Insert(50);
+	   bst.AVL_Insert(40);
+	//   bst.AVL_Insert(30);
+	   /*bst.AVL_Insert(50);
+	   bst.AVL_Insert(40);
+	   bst.AVL_Insert(100);
+	   bst.AVL_Insert(20);
+	   bst.AVL_Insert(45);
+	   bst.AVL_Insert(60);
+	   bst.AVL_Insert(120);
+	   bst.AVL_Insert(55);
+	   bst.AVL_Insert(110);
+	   bst.AVL_Insert(57);*/
+	  // bst.AVL_Insert(115);
+	  // bst.AVL_Insert(52);
+	/*    bst.AVL_Insert(123);
+		bst.AVL_Insert(45);
+		//bst.AVL_Insert(50);
+		bst.AVL_Insert(1331);
+		bst.AVL_Insert(13);
+		bst.AVL_Insert(131);
+		bst.AVL_Insert(31);
+		//bst.AVL_Insert(8);
+		bst.AVL_Insert(22);*/
+	    bst.Level_Order_Traversal(bst.root);
+		//System.out.println();
+	//	System.out.println(bst.root.right.left.left.key);
+		//bst.find_height(131);
+		//bst.delete(31);
+	//	bst.find_height(bst.root.left.key);
+	//	bst.find_height(bst.root.right.key);
+		//System.out.println(bst.rightsize);
+		//bst.find_height(45);
+	//	bst.subtree(1331);
+	//	bst.delete(1331);
+		//System.out.println(bst.root.left.left.right.parent.key);
+	//	bst.delete(31);
+	//	bst.delete(13);
+		//bst.inorder_tree_walk(bst.root);
+	//	System.out.println(bst.root.right.key);
+	//	System.out.println(bst.getPredecessor(bst.root.left.left.right).key);
+	//	System.out.println(bst.getSuccessor(bst.root.right.left).key);
+		//System.out.println(bst.tree_search(bst.root.right,13).key);
+		//System.out.println(bst.tree_minimum(bst.root).key);
+		}
+}

@@ -1,0 +1,31 @@
+public class Node {
+Comparable data;
+Node left=null,right=null;
+static int h=1;
+static int count=0;
+public void addNode(Node nextNode)
+{     
+		if(left==null)
+			{left=nextNode;count++;}
+		else
+			
+		if(right==null && left!=null)
+			{right=nextNode;count++;}
+		else
+			
+	    if(right!=null&&count==Math.pow(2,h))
+			{left.addNode(nextNode);h++;count=0;}
+	    else if(right!=null&&count!=Math.pow(2,h))
+	    {
+	    	Binary_Search_Tree.root.right.addNode(nextNode);
+	    }
+		}
+public void printNodes()
+{
+  if(left!=null)
+	  left.printNodes();
+  System.out.println(data+" ");
+  if(right!=null)
+	  right.printNodes();
+}
+}

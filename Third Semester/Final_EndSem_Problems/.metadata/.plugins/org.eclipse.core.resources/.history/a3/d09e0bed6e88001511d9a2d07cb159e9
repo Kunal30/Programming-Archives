@@ -1,0 +1,12 @@
+
+public class Vertex {
+	Vertex Link[]=new Vertex[10000000];
+	String color;
+	Vertex parent;
+	public Vertex()
+	{
+		color="white";
+		parent=null;
+	}
+
+}
